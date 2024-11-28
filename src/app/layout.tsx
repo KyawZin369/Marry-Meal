@@ -24,7 +24,7 @@ export default function RootLayout({
         <Navigation
           links={links}
           title="Marry Me"
-          logo="/logo.jpg"
+          logo="/image/carelogo.png"
         />
         {children}
         <Footer />
