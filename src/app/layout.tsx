@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Marry Meal",
@@ -20,12 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-         <Navigation
-        links={links}
-        title="Marry Me"
-        logo="/next.svg"
-      />
+        <Navigation
+          links={links}
+          title="Marry Me"
+          logo="/logo.jpg"
+        />
         {children}
+        <Footer />
       </body>
     </html>
   );

@@ -99,7 +99,17 @@ const Navigation: React.FC<NavigationBarProps> = ({ links, title, logo }) => {
             <MenuIcon />
           </IconButton>
         )}
+
+        <Button
+          variant="contained"
+          sx={{
+            margin: 2
+          }}
+        >
+          Register
+        </Button>
       </Toolbar>
+
     </AppBar>
   );
 };
