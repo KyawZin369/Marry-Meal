@@ -39,6 +39,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <title>Marry Meal</title>
+        <link rel="icon" href="/image/carelogo.png" />
+      </head>
       <body>
         <Navigation
           links={links}
