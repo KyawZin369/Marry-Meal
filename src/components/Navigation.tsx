@@ -1,5 +1,5 @@
 // components/NavigationBar.tsx
-"use client"
+"use client";
 
 import React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -11,22 +11,25 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { useTheme, useMediaQuery } from "@mui/material";
-
-// Define type for navigation links
-interface LinkItem {
-  label: string;
-  path: string;
-}
+import { LinkItem } from "@/type/util-type";
+import { useRouter } from "next/navigation";
 
 interface NavigationBarProps {
   links: LinkItem[];
   title: string;
   logo?: string;
+  isRegistered?: boolean;
 }
 
-const Navigation: React.FC<NavigationBarProps> = ({ links, title, logo }) => {
+const Navigation: React.FC<NavigationBarProps> = ({
+  links,
+  title,
+  logo,
+  isRegistered,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
 
   return (
     <AppBar
@@ -100,16 +103,20 @@ const Navigation: React.FC<NavigationBarProps> = ({ links, title, logo }) => {
           </IconButton>
         )}
 
-        <Button
-          variant="contained"
-          sx={{
-            margin: 2
-          }}
-        >
-          Register
-        </Button>
+        {isRegistered && (
+          <Button
+            variant="contained"
+            sx={{
+              margin: 2,
+            }}
+            onClick={() => {
+              router.push("/role");
+            }}
+          >
+            Register
+          </Button>
+        )}
       </Toolbar>
-
     </AppBar>
   );
 };
