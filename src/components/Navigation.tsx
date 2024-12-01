@@ -104,17 +104,30 @@ const Navigation: React.FC<NavigationBarProps> = ({
         )}
 
         {isRegistered && (
-          <Button
-            variant="contained"
-            sx={{
-              margin: 2,
-            }}
-            onClick={() => {
-              router.push("/role");
-            }}
-          >
-            Register
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              sx={{
+                margin: 2,
+              }}
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                margin: 2,
+              }}
+              onClick={() => {
+                router.push("/role"); 
+              }}
+            >
+              Register
+            </Button>
+          </>
         )}
       </Toolbar>
     </AppBar>
