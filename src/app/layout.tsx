@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { LinkItem } from "@/type/util-type";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -50,7 +50,7 @@ export default function RootLayout({
           logo="/image/carelogo.png"
           isRegistered={isRegistered}
         />
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         <Footer />
       </body>
     </html>

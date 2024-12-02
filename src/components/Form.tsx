@@ -19,6 +19,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import Image from "next/image";
 import { RegisterFormValues } from "@/api/register-api/RegisterType";
+// import { Register } from "@/api/register-api/RegisterApi";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
   roleType: string;
@@ -36,7 +38,11 @@ export default function RegistrationPage({ roleType }: FormProps) {
       confirm_password: "",
       first_name: "",
       last_name: "",
+      relationship_with_members: "",
+      shop_name: "",
+      shop_address: "",
       gender: "",
+      township: "",
       age: 0,
       phone_number: "",
       emergency_contact_number: "",
@@ -52,6 +58,8 @@ export default function RegistrationPage({ roleType }: FormProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | undefined>("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
@@ -67,15 +75,46 @@ export default function RegistrationPage({ roleType }: FormProps) {
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((prev) => !prev);
 
-  const onSubmit = (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     if (file) {
       data.image = file.name;
     }
 
     console.log("Form Data Submitted: ", data);
 
-    if (file) {
-      console.log("Uploaded File: ", file);
+    if (roleType === "Member") {
+      const formData = new FormData();
+      formData.append("type", data.type);
+      formData.append("email", data.email);
+      formData.append("user_name", data.user_name);
+      formData.append("password", data.password);
+      formData.append("confirm_password", data.confirm_password);
+      formData.append("first_name", data.first_name);
+      formData.append("last_name", data.last_name);
+      data.relationship_with_members = data.relationship_with_members || "";
+      formData.append("shop_name", data.shop_name || "");
+      formData.append("shop_address", data.shop_address || "");
+      formData.append("gender", data.gender);
+      formData.append("township", data.township || "");
+      formData.append("age", String(data.age));
+      formData.append("phone_number", data.phone_number);
+      formData.append(
+        "emergency_contact_number",
+        data.emergency_contact_number
+      );
+      formData.append("date_of_birth", data.date_of_birth);
+      formData.append("address", data.address);
+      formData.append("dietary_restriction", data.dietary_restriction);
+
+      if (file) {
+        formData.append("image", file);
+      }
+
+      try {
+        console.log("Submitting FormData...");
+      } catch (err) {
+        console.error("Error during registration: ", err);
+      }
     }
   };
 
@@ -94,7 +133,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
           boxShadow: 6,
           borderRadius: 4,
           backgroundColor: "#ffffff",
-          margin : "30px 0px"
+          margin: "30px 0px",
         }}
       >
         <Box display="flex" justifyContent="center" mb={3}>
@@ -334,79 +373,163 @@ export default function RegistrationPage({ roleType }: FormProps) {
               />
             </Box>
 
-            <Box sx={{ flex: 1 }}>
-              <Controller
-                name="emergency_contact_number"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Emergency Contact Number"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: 2,
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        padding: "12px 14px",
-                      },
-                    }}
-                  />
-                )}
-              />
-            </Box>
+            {roleType === "Member" && (
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="emergency_contact_number"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Emergency Contact Number"
+                      variant="outlined"
+                      fullWidth
+                      required
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "12px 14px",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            )}
           </Box>
 
           <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
-            <Box sx={{ flex: 1 }}>
-              <Controller
-                name="age"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Age"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: 2,
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        padding: "12px 14px",
-                      },
-                    }}
-                  />
-                )}
-              />
-            </Box>
+            {(roleType === "Member" ||
+              roleType === "caregiver" ||
+              roleType === "volunteer") && (
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="age"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Age"
+                      variant="outlined"
+                      fullWidth
+                      required
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "12px 14px",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            )}
 
-            <Box sx={{ flex: 1 }}>
-              <Controller
-                name="dietary_restriction"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Dietary Restriction"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: 2,
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        padding: "12px 14px",
-                      },
-                    }}
+            {roleType === "Partner" && (
+              <>
+                <Box sx={{ flex: 1 }}>
+                  <Controller
+                    name="shop_name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Shop Name"
+                        variant="outlined"
+                        fullWidth
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            padding: "12px 14px",
+                          },
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-            </Box>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Controller
+                    name="shop_address"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Shop Address"
+                        variant="outlined"
+                        fullWidth
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            padding: "12px 14px",
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+              </>
+            )}
+
+            {roleType === "Member" && (
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="dietary_restriction"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Dietary Restriction"
+                      variant="outlined"
+                      fullWidth
+                      required
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "12px 14px",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            )}
+            {roleType === "Care giver" && (
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="relationship_with_members"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Relationship with Members"
+                      variant="outlined"
+                      fullWidth
+                      required
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "12px 14px",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            )}
           </Box>
 
           <Box sx={{ mb: 3 }}>
@@ -417,6 +540,27 @@ export default function RegistrationPage({ roleType }: FormProps) {
                 <TextField
                   {...field}
                   label="Address"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+              )}
+            />
+          </Box>
+
+          <Box sx={{ mb: 3 }}>
+            <Controller
+              name="township"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Township"
                   variant="outlined"
                   fullWidth
                   required
@@ -461,9 +605,9 @@ export default function RegistrationPage({ roleType }: FormProps) {
                 control={control}
                 render={({ field }) => (
                   <Select {...field} label="Gender" sx={{ borderRadius: 2 }}>
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                    <MenuItem value="Male">male</MenuItem>
+                    <MenuItem value="Female">female</MenuItem>
+                    <MenuItem value="Other">other</MenuItem>
                   </Select>
                 )}
               />
