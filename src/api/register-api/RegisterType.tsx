@@ -7,7 +7,7 @@ export interface RegisterFormValues {
     first_name: string;
     last_name: string;
     gender: string;
-    relationship_with_members?: string | undefined;
+    relationship_with_member?: string | undefined;
     age: number;
     phone_number: string;
     shop_name?: string | null;

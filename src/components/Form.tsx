@@ -39,17 +39,17 @@ export default function RegistrationPage({ roleType }: FormProps) {
       confirm_password: "",
       first_name: "",
       last_name: "",
-      relationship_with_members: "",
+      relationship_with_member: "null",
       shop_name: "null",
       shop_address: "null",
       gender: "",
       township: "",
       age: 0,
       phone_number: "",
-      emergency_contact_number: "",
+      emergency_contact_number: "null",
       date_of_birth: "",
       address: "",
-      dietary_restriction: "",
+      dietary_restriction: "null",
       image: null,
     },
   });
@@ -90,7 +90,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
       formData.append("confirm_password", data.confirm_password);
       formData.append("first_name", data.first_name);
       formData.append("last_name", data.last_name);
-      formData.append("relationship_with_members", data.relationship_with_members || "")
+      formData.append("relationship_with_member", data.relationship_with_member || "")
       formData.append("shop_name", data.shop_name || "");
       formData.append("shop_address", data.shop_address || "");
       formData.append("gender", data.gender);
@@ -203,24 +203,22 @@ export default function RegistrationPage({ roleType }: FormProps) {
           </Box>
 
           <Box sx={{ mb: 3 }}>
-            <Controller
-              name="type"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="User Type"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                    },
-                  }}
-                />
-              )}
-            />
+            <FormControl fullWidth required>
+              <InputLabel>User Type</InputLabel>
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} label="User Type" sx={{ borderRadius: 2 }}>
+                    <MenuItem value="member">member</MenuItem>
+                    <MenuItem value="caregiver">caregiver</MenuItem>
+                    <MenuItem value="partner">partner</MenuItem>
+                    <MenuItem value="volunteer">volunteer</MenuItem>
+                    <MenuItem value="donor">donor</MenuItem>
+                  </Select>
+                )}
+              />
+            </FormControl>
           </Box>
 
           <Box sx={{ mb: 3 }}>
@@ -505,7 +503,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
             {roleType === "Care giver" && (
               <Box sx={{ flex: 1 }}>
                 <Controller
-                  name="relationship_with_members"
+                  name="relationship_with_member"
                   control={control}
                   render={({ field }) => (
                     <TextField
