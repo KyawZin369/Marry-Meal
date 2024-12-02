@@ -21,6 +21,7 @@ import Image from "next/image";
 import { RegisterFormValues } from "@/api/register-api/RegisterType";
 // import { Register } from "@/api/register-api/RegisterApi";
 import { useRouter } from "next/navigation";
+import { Register } from "@/api/register-api/RegisterApi";
 
 interface FormProps {
   roleType: string;
@@ -39,8 +40,8 @@ export default function RegistrationPage({ roleType }: FormProps) {
       first_name: "",
       last_name: "",
       relationship_with_members: "",
-      shop_name: "",
-      shop_address: "",
+      shop_name: "null",
+      shop_address: "null",
       gender: "",
       township: "",
       age: 0,
@@ -49,7 +50,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
       date_of_birth: "",
       address: "",
       dietary_restriction: "",
-      image: "",
+      image: null,
     },
   });
 
@@ -80,9 +81,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
       data.image = file.name;
     }
 
-    console.log("Form Data Submitted: ", data);
-
-    if (roleType === "Member") {
+    try {
       const formData = new FormData();
       formData.append("type", data.type);
       formData.append("email", data.email);
@@ -91,7 +90,7 @@ export default function RegistrationPage({ roleType }: FormProps) {
       formData.append("confirm_password", data.confirm_password);
       formData.append("first_name", data.first_name);
       formData.append("last_name", data.last_name);
-      data.relationship_with_members = data.relationship_with_members || "";
+      formData.append("relationship_with_members", data.relationship_with_members || "")
       formData.append("shop_name", data.shop_name || "");
       formData.append("shop_address", data.shop_address || "");
       formData.append("gender", data.gender);
@@ -109,12 +108,10 @@ export default function RegistrationPage({ roleType }: FormProps) {
       if (file) {
         formData.append("image", file);
       }
-
-      try {
-        console.log("Submitting FormData...");
-      } catch (err) {
-        console.error("Error during registration: ", err);
-      }
+      console.log("FormData: ", data);
+      await Register(JSON.parse(JSON.stringify(data)));
+    } catch (err) {
+      console.error("Error during registration: ", err);
     }
   };
 
@@ -404,30 +401,30 @@ export default function RegistrationPage({ roleType }: FormProps) {
             {(roleType === "Member" ||
               roleType === "caregiver" ||
               roleType === "volunteer") && (
-              <Box sx={{ flex: 1 }}>
-                <Controller
-                  name="age"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Age"
-                      variant="outlined"
-                      fullWidth
-                      required
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                        "& .MuiOutlinedInput-input": {
-                          padding: "12px 14px",
-                        },
-                      }}
-                    />
-                  )}
-                />
-              </Box>
-            )}
+                <Box sx={{ flex: 1 }}>
+                  <Controller
+                    name="age"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Age"
+                        variant="outlined"
+                        fullWidth
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: 2,
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            padding: "12px 14px",
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
 
             {roleType === "Partner" && (
               <>
@@ -605,9 +602,9 @@ export default function RegistrationPage({ roleType }: FormProps) {
                 control={control}
                 render={({ field }) => (
                   <Select {...field} label="Gender" sx={{ borderRadius: 2 }}>
-                    <MenuItem value="Male">male</MenuItem>
-                    <MenuItem value="Female">female</MenuItem>
-                    <MenuItem value="Other">other</MenuItem>
+                    <MenuItem value="male">male</MenuItem>
+                    <MenuItem value="female">female</MenuItem>
+                    <MenuItem value="other">other</MenuItem>
                   </Select>
                 )}
               />

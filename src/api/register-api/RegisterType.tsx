@@ -17,5 +17,5 @@ export interface RegisterFormValues {
     date_of_birth: string;
     address: string;
     dietary_restriction: string;
-    image: string | undefined;
+    image: string | undefined | null;
   }
