@@ -14,11 +14,9 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import Image from "next/image";
+import { LoginFormValues } from "@/api/login-api/LoginType";
+import { login } from "@/api/login-api/LoginApi";
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,11 +31,31 @@ export default function LoginPage() {
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     console.log("Form Data Submitted: ", data);
-    // Handle authentication logic here
-  };
+  
+    if(data){
+      try {
+        const result = await login(data);
+    
+        if (result && result.token) {
+    
+          sessionStorage.setItem("authToken", result.token);
 
+          if(result.user.type === "member") {
+            router.push("/member");
+          }
+    
+        } else {
+          console.error("Login failed: Invalid response");
+          alert("Login failed. Please check your credentials.");
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
+    }
+  };
+  
   return (
     <Stack
       alignItems="center"
