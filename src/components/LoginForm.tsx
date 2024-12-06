@@ -37,13 +37,17 @@ export default function LoginPage() {
     if(data){
       try {
         const result = await login(data);
+
+        console.log("Result: ", result);
     
         if (result && result.token) {
     
           sessionStorage.setItem("authToken", result.token);
 
-          if(result.user.type === "member") {
-            router.push("/member");
+          const userType = result.user.type;
+
+          if(userType) {
+            router.push(`/${userType}`);
           }
     
         } else {

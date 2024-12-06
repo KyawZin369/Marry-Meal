@@ -35,7 +35,7 @@ export default function RootLayout({
         { label: "logout", path: "/logout" },
       ]);
       setIsRegistered(false);
-    } else if (pathname === "/care-giver"){
+    } else if (pathname === "/caregiver"){
       setLinks([
         { label: "Menu", path: "/caregiver/menu" },
         { label: "logout", path: "/logout" },
