@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { LinkItem } from "@/type/util-type";
 import { useState, useEffect, Suspense } from "react";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function RootLayout({
   children,
@@ -33,30 +34,35 @@ export default function RootLayout({
         { label: "Meals", path: "/member/meals" },
         { label: "Orders", path: "/member/orders" },
         { label: "logout", path: "/logout" },
+        { label: "", path: "/profile", Icon: <AccountCircleIcon /> },
       ]);
       setIsRegistered(false);
     } else if (pathname === "/caregiver"){
       setLinks([
         { label: "Menu", path: "/caregiver/menu" },
         { label: "logout", path: "/logout" },
+        { label: "", path: "/profile", Icon: <AccountCircleIcon /> },
       ]);
       setIsRegistered(false);
     } else if (pathname === "/donation") {
       setLinks([
         { label: "Donate", path: "/donation" },
         { label: "logout", path: "/logout" },
+        { label: "", path: "/profile", Icon: <AccountCircleIcon /> },
       ]);
       setIsRegistered(false);
     } else if(pathname === "/partner"){
       setLinks([
         { label: "Orders List", path: "/partner" },
         { label: "logout", path: "/logout" },
+        { label: "", path: "/profile", Icon: <AccountCircleIcon /> },
       ]);
       setIsRegistered(false);
     } else if ( pathname === "/volunteer") {
       setLinks([
         { label: "Meals to Deliver", path: "/volunteer" },
         { label: "logout", path: "/logout" },
+        { label: "", path: "/profile", Icon: <AccountCircleIcon /> },
       ])
     }
   }, [pathname]);

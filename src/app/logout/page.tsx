@@ -25,12 +25,22 @@ const Logout: React.FC = () => {
 
   const router = useRouter();
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
+    try {
+      // await logout();
+      const key = sessionStorage.key(0);
 
-    await logout();
+      if (key) {
+        sessionStorage.removeItem(key);
+      }
+      router.push("/");
+    } catch (error) {
+      console.error("Failed to log out:", error);
 
-    router.push("/")
+      alert("There was an issue logging out. Please try again.");
+    }
   };
+  
 
   return (
     <ThemeProvider theme={theme}>

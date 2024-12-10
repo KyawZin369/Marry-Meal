@@ -82,6 +82,21 @@ const Navigation: React.FC<NavigationBarProps> = ({
                 >
                   {link.label}
                 </Button>
+                  {link.Icon && (
+                    <IconButton
+                      edge="end"
+                      color="inherit"
+                      aria-label="menu"
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#D9EAFD",
+                        },
+                        backgroundColor: "white",
+                      }}
+                    >
+                      {link.Icon}
+                    </IconButton>
+                  )}
               </Link>
             ))}
           </Box>

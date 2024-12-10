@@ -4,6 +4,6 @@ interface logoutResType {
     message : string;
 }
 
-export const logout = async () => {
-    await MMAPI.post<logoutResType>("/logout");
+export const logout = () => {
+    return MMAPI.post<logoutResType>("/logout");
 };
